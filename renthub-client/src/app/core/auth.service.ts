@@ -5,10 +5,11 @@ import { map, tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthResponse, User } from '../models/auth.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
   private tokenKey = 'renthub_token';
   private userKey = 'renthub_user';
 

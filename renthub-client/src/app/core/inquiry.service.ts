@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface Inquiry {
   id: string;
@@ -39,7 +40,7 @@ export interface Inquiry {
 
 @Injectable({ providedIn: 'root' })
 export class InquiryService {
-  private apiUrl = 'http://localhost:3000/api/inquiries';
+  private apiUrl = `${environment.apiUrl}/inquiries`;
 
   constructor(private http: HttpClient) {}
 

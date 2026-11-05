@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/renthub-client/dist/renthub-client/browser/index.html"
+    }
+  ]
+}

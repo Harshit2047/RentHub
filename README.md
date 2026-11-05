@@ -8,9 +8,9 @@ A full-stack apartment rental web application built with **Angular 22**, **Tailw
 
 | Resource | URL |
 |---|---|
-| **GitHub Repository** | `https://github.com/your-username/renthub` *(Replace with your repository link)* |
-| **Live Deployed App** | `https://renthub-app.vercel.app` *(Replace with your deployed frontend URL)* |
-| **Backend API Health** | `http://localhost:3000/api/health` |
+| **Live Deployed Frontend** | [https://rent-hub-tawny.vercel.app](https://rent-hub-tawny.vercel.app) |
+| **Live Deployed Backend** | [https://renthub-ez74.onrender.com](https://renthub-ez74.onrender.com) |
+| **Backend API Health Check** | [https://renthub-ez74.onrender.com/api/health](https://renthub-ez74.onrender.com/api/health) |
 
 ---
 

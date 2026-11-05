@@ -4,10 +4,11 @@ import { Observable, of, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Apartment } from '../models/apartment.model';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class FavouriteService {
-  private apiUrl = 'http://localhost:3000/api/favourites';
+  private apiUrl = `${environment.apiUrl}/favourites`;
 
   /** Local set of favourited apartment IDs for instant UI feedback */
   private favouriteIds = new BehaviorSubject<Set<string>>(new Set());
