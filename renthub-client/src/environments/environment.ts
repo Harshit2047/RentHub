@@ -15,3 +15,4 @@ export const environment = {
   production: false,
   apiUrl: isLocalhost ? 'http://localhost:3000/api' : 'https://renthub-ez74.onrender.com/api',
 };
+
