@@ -35,9 +35,13 @@ export class LoginComponent implements OnInit {
     this.isSubmitting = true;
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: () => {
-        this.toast.success('Welcome back! Logged in successfully.');
-        this.router.navigate(['/dashboard']);
+      next: (user) => {
+        this.toast.success(`Welcome back, ${user.fullName || 'User'}! Logged in successfully.`);
+        if (user.role === 'LANDLORD') {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/apartments']);
+        }
       },
       error: (err) => {
         this.isSubmitting = false;

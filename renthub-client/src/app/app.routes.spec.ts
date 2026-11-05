@@ -60,11 +60,12 @@ describe('AppRoutingModule / Routes Configuration', () => {
     expect(favRoute?.canActivate).toContain(AuthGuard);
   });
 
-  it('should protect /dashboard with AuthGuard', () => {
+  it('should protect /dashboard with AuthGuard and require LANDLORD role', () => {
     const dashRoute = routes.find(r => r.path === 'dashboard');
     expect(dashRoute).toBeDefined();
     expect(dashRoute?.component).toBe(DashboardComponent);
     expect(dashRoute?.canActivate).toContain(AuthGuard);
+    expect(dashRoute?.data?.['role']).toBe('LANDLORD');
   });
 
   it('should route wildcard ** to NotFoundComponent', () => {
@@ -73,3 +74,4 @@ describe('AppRoutingModule / Routes Configuration', () => {
     expect(wildcardRoute?.component).toBe(NotFoundComponent);
   });
 });
+

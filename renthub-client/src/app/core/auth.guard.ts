@@ -1,23 +1,29 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from './auth.service';
+import { ToastService } from '../shared/toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toast: ToastService
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRole = route.data['role'];
 
     if (!this.authService.isAuthenticated()) {
+      this.toast.info('Please log in to continue.');
       this.router.navigate(['/login']);
       return false;
     }
 
-    // Role-based guard: send users who lack the required role to their dashboard
-    // instead of back to the login page (they are already authenticated).
+    // Role-based guard: only users with the required role may enter
     if (expectedRole && !this.authService.hasRole(expectedRole)) {
-      this.router.navigate(['/dashboard']);
+      this.toast.warning('Access denied: Landlord privileges are required to access this page.');
+      this.router.navigate(['/home']);
       return false;
     }
 

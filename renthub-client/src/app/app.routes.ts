@@ -50,6 +50,7 @@ export const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard],
+    data: { role: 'LANDLORD' },
   },
   {
     path: 'login',
