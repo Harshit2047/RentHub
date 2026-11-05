@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String   @unique
+  password  String
+  phone     String?
+  role      String   @default("TENANT")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  landlord      Landlord?
+  inquiriesSent Inquiry[]
+  favourites    Favourite[]
+  comments      Comment[]
+}
+
+model Landlord {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  companyName String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apartments        Apartment[]
+  inquiriesReceived Inquiry[]
+}
+
+model Apartment {
+  id              String   @id @default(uuid())
+  title           String
+  description     String?
+  address         String
+  city            String
+  state           String?
+  pincode         String
+  monthlyRent     Decimal
+  securityDeposit Decimal?
+  bedrooms        Int
+  bathrooms       Int
+  area            Decimal?
+  furnished       String
+  vegetarian      String
+  availability    String   @default("AVAILABLE")
+  landlordId      String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  landlord   Landlord         @relation(fields: [landlordId], references: [id], onDelete: Cascade)
+  images     ApartmentImage[]
+  amenities  ApartmentAmenity[]
+  favourites Favourite[]
+  inquiries  Inquiry[]
+  comments   Comment[]
+
+  @@index([city])
+  @@index([state])
+  @@index([availability])
+  @@index([monthlyRent])
+}
+
+model ApartmentImage {
+  id         String   @id @default(uuid())
+  apartmentId String
+  url        String
+  publicId   String?
+  orderIndex Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  apartment Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+
+  @@index([apartmentId])
+}
+
+model Amenity {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+
+  apartments ApartmentAmenity[]
+}
+
+model ApartmentAmenity {
+  apartmentId String
+  amenityId   String
+
+  apartment Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+  amenity   Amenity   @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@id([apartmentId, amenityId])
+  @@index([amenityId])
+}
+
+model Favourite {
+  userId      String
+  apartmentId String
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apartment Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+
+  @@id([userId, apartmentId])
+  @@index([apartmentId])
+}
+
+model Comment {
+  id              String   @id @default(uuid())
+  content         String
+  apartmentId     String
+  userId          String
+  parentCommentId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  apartment     Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentComment Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies       Comment[] @relation("CommentReplies")
+
+  @@index([apartmentId])
+  @@index([parentCommentId])
+}
+
+model Inquiry {
+  id          String   @id @default(uuid())
+  apartmentId String
+  tenantId    String
+  landlordId  String
+  message     String
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  apartment Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+  tenant    User      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  landlord  Landlord  @relation(fields: [landlordId], references: [id], onDelete: Cascade)
+
+  @@index([apartmentId])
+  @@index([tenantId])
+  @@index([landlordId])
+  @@index([status])
+}

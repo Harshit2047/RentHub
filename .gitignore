@@ -1,0 +1,49 @@
+# =====================
+# Node / npm
+# =====================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =====================
+# Environment variables
+# =====================
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# =====================
+# Angular build outputs
+# =====================
+renthub-client/dist/
+renthub-client/.angular/
+
+# =====================
+# Express / general build outputs
+# =====================
+renthub-server/dist/
+
+# =====================
+# Prisma (future)
+# =====================
+prisma/*.db
+prisma/*.db-journal
+
+# =====================
+# OS / editor
+# =====================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/settings.json
+.idea/
+
+# =====================
+# Logs
+# =====================
+*.log
+logs/
+

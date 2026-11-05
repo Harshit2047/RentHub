@@ -1,0 +1,14 @@
+@if (!isAuthPage) {
+  <app-navbar></app-navbar>
+}
+
+<main [class.main]="!isAuthPage">
+  <router-outlet></router-outlet>
+</main>
+
+@if (!isAuthPage) {
+  <app-footer></app-footer>
+}
+
+<!-- Global toast notifications -->
+<app-toast></app-toast>

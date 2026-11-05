@@ -1,0 +1,7 @@
+{
+  "fullName": "Demo Tenant",
+  "email": "tenant@example.com",
+  "password": "Testpass123!",
+  "phone": "+91 8888888888",
+  "role": "TENANT"
+}

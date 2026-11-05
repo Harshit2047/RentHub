@@ -1,0 +1,18 @@
+.favourites-page {
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-state p {
+  margin-bottom: 1rem;
+}
+
+.empty-state .text-sm {
+  color: #94a3b8;
+}

@@ -1,0 +1,33 @@
+import { definePrismaConfig } from "prisma/config";
+
+export default definePrismaConfig({
+  orm: {
+    adapter: {
+      id: "prisma-adapter",
+      kind: "adapter",
+      version: "1.0.0",
+      familyId: "postgresql-family",
+      targetId: "prisma-target",
+      create: () => {},
+    },
+    family: {
+      id: "postgresql-family",
+      kind: "family",
+      version: "1.0.0",
+      emission: {},
+      familyId: "postgresql-family",
+      create: () => {},
+    },
+    target: {
+      id: "prisma-target",
+      kind: "target",
+      version: "1.0.0",
+      familyId: "postgresql-family",
+      targetId: "prisma-target",
+      create: () => {},
+    },
+  },
+  skills: {
+    agents: ["claude", "cursor", "agents", "devin"],
+  },
+});
