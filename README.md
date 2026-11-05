@@ -71,11 +71,12 @@ RentHub includes a comprehensive unit testing suite covering **Components**, **S
 | Type | Test File | Tests | Status |
 |---|---|:---:|:---:|
 | **Component** | `src/app/apartments/apartment-card.component.spec.ts` | 5 | ✅ Passed |
+| **Component** | `src/app/auth/register.component.spec.ts` | 8 | ✅ Passed |
 | **Service** | `src/app/core/apartment.service.spec.ts` | 6 | ✅ Passed |
 | **Service** | `src/app/core/auth.service.spec.ts` | 9 | ✅ Passed |
 | **Guard** | `src/app/core/auth.guard.spec.ts` | 4 | ✅ Passed |
 | **Module / Routing** | `src/app/app.routes.spec.ts` | 9 | ✅ Passed |
-| **Total** | **5 Test Suites** | **33 Tests** | **✅ 100% Passed (0 Failures)** |
+| **Total** | **6 Test Suites** | **41 Tests** | **✅ 100% Passed (0 Failures)** |
 
 To execute the unit tests:
 ```bash
