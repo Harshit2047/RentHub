@@ -1,1 +1,0 @@
-{"success":false,"message":"\nInvalid `prisma.apartment.count()` invocation:\n\n\nThe table `main.Apartment` does not exist in the current database."}

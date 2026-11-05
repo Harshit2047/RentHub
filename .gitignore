@@ -19,17 +19,28 @@ yarn-error.log*
 # =====================
 renthub-client/dist/
 renthub-client/.angular/
+dist/
 
 # =====================
 # Express / general build outputs
 # =====================
 renthub-server/dist/
+uploads/
 
 # =====================
-# Prisma (future)
+# Databases / SQLite
 # =====================
-prisma/*.db
-prisma/*.db-journal
+*.db
+*.db-journal
+dev.db
+
+# =====================
+# AI Agent folders
+# =====================
+.agents/
+.claude/
+.cursor/
+.devin/
 
 # =====================
 # OS / editor
@@ -38,12 +49,21 @@ prisma/*.db-journal
 Thumbs.db
 *.swp
 *.swo
+*.bak
 .vscode/settings.json
 .idea/
+
+# =====================
+# Temporary test/scratch files
+# =====================
+body.json
+resp.json
+tenant.json
+checkdb.mjs
+test_health.mjs
 
 # =====================
 # Logs
 # =====================
 *.log
 logs/
-
