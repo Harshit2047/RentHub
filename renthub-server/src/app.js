@@ -6,63 +6,38 @@ import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
-// ─── CORS ───────────────────────────────────────────────────────────────────
-// Allowed origins include localhost, rent-hub-tawny.vercel.app, and any Vercel
-// deployment domain to ensure production and preview environments work seamlessly.
-const isLocalhostOrigin = (origin) => {
-  try {
-    const { protocol, hostname } = new URL(origin);
-    return (
-      (protocol === 'http:' || protocol === 'https:') &&
-      ['localhost', '127.0.0.1', '::1', '[::1]'].includes(hostname)
-    );
-  } catch {
-    return false;
-  }
-};
-
-const isAllowedOrigin = (origin) => {
-  // No Origin header: curl, Postman, server-to-server, health checks.
-  if (!origin) return true;
-
-  const normalized = origin.trim().replace(/\/+$/, '');
-
-  // Check explicit allowed origins from env.CLIENT_URLS
-  if (env.CLIENT_URLS.some((u) => u.replace(/\/+$/, '') === normalized)) {
-    return true;
+// ─── Bulletproof Universal CORS Middleware ────────────────────────────────────
+// Dynamically reflect any requesting origin (including all Vercel domains,
+// preview branch URLs, and localhost) and immediately handle preflight OPTIONS.
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Range, X-Content-Range');
   }
 
-  // Allow all Vercel domains (e.g. rent-hub-tawny.vercel.app and preview deployments)
-  try {
-    const { hostname } = new URL(normalized);
-    if (hostname === 'rent-hub-tawny.vercel.app' || hostname.endsWith('.vercel.app')) {
-      return true;
-    }
-  } catch {
-    // Ignore URL parse error
+  // Immediately respond to preflight OPTIONS requests with 200 OK
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
 
-  // Allow localhost origins in development
-  return env.NODE_ENV !== 'production' && isLocalhostOrigin(normalized);
-};
+  next();
+});
 
-const corsOptions = {
-  origin(origin, callback) {
-    if (isAllowedOrigin(origin)) {
-      callback(null, true);
-    } else {
-      callback(null, false);
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
-  exposedHeaders: ['Content-Range', 'X-Content-Range'],
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
-
-// Apply CORS as the very first middleware
-app.use(cors(corsOptions));
+// Also wire standard cors package with origin reflection as safety net
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    optionsSuccessStatus: 200,
+  })
+);
 
 // API responses are dynamic — never let the browser serve a stale 304 cache.
 app.set('etag', false);
