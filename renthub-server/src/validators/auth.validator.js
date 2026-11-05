@@ -6,27 +6,25 @@ export const registerSchema = z.object({
   email: z.string().trim().toLowerCase().email('Must be a valid email').max(150),
   password: z
     .string()
-    .min(8, 'Password must be at least 8 characters')
-    .max(128)
-    .regex(/[A-Z]/, 'Must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Must contain at least one number')
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Must contain at least one special character'),
-  // Phone is optional in the UI; an empty string must be accepted too.
+    .min(6, 'Password must be at least 6 characters')
+    .max(128),
   phone: z
     .string()
     .trim()
-    .max(20)
-    .refine(
-      (val) => val === '' || /^[\d+\- ]+$/.test(val),
-      'Must be a valid phone number'
+    .max(25)
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  role: z
+    .preprocess(
+      (val) => (typeof val === 'string' ? val.toUpperCase() : val),
+      z.enum(['TENANT', 'LANDLORD'])
     )
-    .optional(),
-  role: z.enum(['TENANT', 'LANDLORD']),
-})
+    .default('TENANT'),
+});
 
 /// Login schema
 export const loginSchema = z.object({
-  email: z.string().email('Must be a valid email'),
+  email: z.string().trim().toLowerCase().email('Must be a valid email'),
   password: z.string().min(1, 'Password is required'),
-})
+});

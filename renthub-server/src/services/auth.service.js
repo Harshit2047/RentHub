@@ -57,14 +57,15 @@ export const registerUser = async (
   // Hash the password
   const hashedPassword = await hashPassword(password);
 
-  // Create the user
+  // Create the user (and Landlord profile if LANDLORD)
   const user = await prisma.user.create({
     data: {
       fullName,
-      email,
+      email: email.toLowerCase(),
       password: hashedPassword,
       phone: phone || null,
       role,
+      ...(role === 'LANDLORD' ? { landlord: { create: {} } } : {}),
     },
   });
 

@@ -27,8 +27,8 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       fullName:        ['', [Validators.required, Validators.maxLength(100)]],
       email:           ['', [Validators.required, Validators.email]],
-      phone:           ['', [Validators.pattern(/^[\d+\- ]+$/), Validators.maxLength(20)]],
-      password:        ['', [Validators.required, Validators.minLength(8)]],
+      phone:           ['', [Validators.pattern(/^[\d+\-\s()]*$/), Validators.maxLength(20)]],
+      password:        ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
       role:            ['TENANT', [Validators.required]],
     }, { validators: this.passwordMatchValidator });
@@ -51,9 +51,13 @@ export class RegisterComponent implements OnInit {
     const { fullName, email, phone, password, role } = this.registerForm.value;
 
     this.authService.register({ fullName, email, phone: phone || '', password, role }).subscribe({
-      next: () => {
-        this.toast.success('Account created! Please sign in.');
-        this.router.navigate(['/login']);
+      next: (user) => {
+        this.toast.success(`Account created! Welcome to RentHub, ${user.fullName || 'User'}!`);
+        if (user.role === 'LANDLORD') {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/apartments']);
+        }
       },
       error: (err) => {
         this.isSubmitting = false;
