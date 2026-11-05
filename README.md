@@ -22,7 +22,6 @@ The database comes pre-seeded with test accounts for immediate evaluation:
 |---|---|---|---|
 | **Landlord (Host)** | `landlord@example.com` | `Password123!` | Post/Edit listings, upload photos, manage inquiries (Accept/Decline), reply with "Host" badge |
 | **Tenant** | `tenant@example.com` | `Password123!` | Browse, filter, save Favourites, submit booking inquiries, comment and ask questions |
-| **Admin** | `admin@example.com` | `Password123!` | System-wide listing moderation and account management |
 
 *(New users can also register freely on `/register` as either a Tenant or a Landlord.)*
 
